@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas 10 I - MAN 2 Semarang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .student-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .edit-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .schedule-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .schedule-table tr:hover {
+            background: #f8f9ff;
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .login-form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .add-form {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-row input,
+        .form-row select {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .day-header {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            margin: 20px 0 10px 0;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .duty-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .duty-item {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .student-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .schedule-table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1><i class="fas fa-graduation-cap"></i> Kelas 10 I</h1>
+                    <p class="subtitle">MAN 2 Kota Semarang - Semester Gasal TA 2025/2026</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showSection('siswa')">
+                        <i class="fas fa-users"></i> Daftar Siswa
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSection('jadwal')">
+                        <i class="fas fa-calendar"></i> Jadwal Pelajaran
+                    </button>
+                    <button class="btn btn-secondary" onclick="showSection('piket')">
+                        <i class="fas fa-broom"></i> Jadwal Piket
+                    </button>
+                    <button class="btn btn-primary" onclick="showAdmin()">
+                        <i class="fas fa-cog"></i> Admin
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Daftar Siswa -->
+        <div id="siswa" class="content-section active">
+            <h2 class="section-title"><i class="fas fa-users"></i> Daftar Siswa</h2>
+            <div id="studentList" class="student-grid"></div>
+        </div>
+
+        <!-- Jadwal Pelajaran -->
+        <div id="jadwal" class="content-section">
+            <h2 class="section-title"><i class="fas fa-calendar"></i> Jadwal Pelajaran</h2>
+            <div id="scheduleContent"></div>
+        </div>
+
+        <!-- Jadwal Piket -->
+        <div id="piket" class="content-section">
+            <h2 class="section-title"><i class="fas fa-broom"></i> Jadwal Piket</h2>
+            <div id="dutyContent"></div>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="loginModal" class="login-modal">
+            <div class="login-form">
+                <h3><i class="fas fa-lock"></i> Login Administrator</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeLogin()">Batal</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="content-section">
+            <h2 class="section-title"><i class="fas fa-cog"></i> Panel Administrator</h2>
+            
+            <!-- Tambah Siswa -->
+            <div class="add-form">
+                <h3>Tambah Siswa Baru</h3>
+                <div class="form-row">
+                    <input type="text" id="newStudent" placeholder="Nama Siswa">
+                    <button class="btn btn-primary" onclick="addStudent()">Tambah</button>
+                </div>
+            </div>
+
+            <!-- Tambah Jadwal -->
+            <div class="add-form">
+                <h3>Tambah Jadwal Pelajaran</h3>
+                <div class="form-row">
+                    <select id="day">
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                    </select>
+                    <input type="text" id="time" placeholder="Jam (contoh: 07.00-07.45)">
+                    <input type="text" id="subject" placeholder="Mata Pelajaran">
+                    <input type="text" id="teacher" placeholder="Guru">
+                    <button class="btn btn-primary" onclick="addSchedule()">Tambah</button>
+                </div>
+            </div>
+
+            <!-- Tambah Piket -->
+            <div class="add-form">
+                <h3>Tambah Jadwal Piket</h3>
+                <div class="form-row">
+                    <select id="dutyDay">
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                    </select>
+                    <input type="text" id="dutyName" placeholder="Nama Siswa">
+                    <button class="btn btn-primary" onclick="addDuty()">Tambah</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Awal
+        let students = [
+            'Sania', 'Febi', 'Meisha', 'Ririn', 'Siska', 'Sadana', 'Wafi', 'Rajid',
+            'Alim', 'Daman', 'Ilham', 'Rezky', 'Hafi', 'Rayya', 'Aca', 'Jihan',
+            'Zahwa', 'Tasya', 'Naswa', 'Nanda', 'Nafis', 'Jawahir', 'Ikmal', 'Nino',
+            'Faaza', 'Azza', 'Fadila', 'Aina', 'Sheila', 'Firda', 'Chiko', 'Zahra',
+            'Noval', 'Munib', 'Adam', 'Faris'
+        ];
+
+        let schedule = {
+            'Senin': [
+                { time: '07.00-07.45', subject: 'Do\'a Awal KBM', teacher: 'Oko Hermanto' },
+                { time: '07.45-08.30', subject: 'SKI', teacher: 'Fakni Halim, S.Pd' },
+                { time: '08.30-09.15', subject: 'Sosiologi', teacher: 'Nila Zahidah' },
+                { time: '09.15-10.00', subject: 'Ekonomi', teacher: 'Syakir Ahmad, S.Pd' },
+                { time: '10.00-10.45', subject: 'Bahasa Inggris', teacher: 'Sholihatin, S.Pd' },
+                { time: '10.45-11.30', subject: 'Geografi', teacher: 'Usrur Rieyie, S.Pd' },
+                { time: '11.30-12.15', subject: 'Informatika', teacher: 'Tri Uswatun' }
+            ],
+            'Selasa': [
+                { time: '07.00-07.45', subject: 'Do\'a Awal KBM', teacher: 'Oko Hermanto' },
+                { time: '07.45-08.30', subject: 'Seni Budaya', teacher: 'Afrian Restu Utama, M.Pd' },
+                { time: '08.30-09.15', subject: 'Bahasa Arab', teacher: 'Romadhon, S.Ag' },
+                { time: '09.15-10.00', subject: 'Matematika', teacher: 'Prs. Budi Susanto' },
+                { time: '10.00-10.45', subject: 'Bahasa Indonesia', teacher: 'H, S.Pd' },
+                { time: '10.45-11.30', subject: 'Fisika', teacher: 'Nurlaila, S.Pd' },
+                { time: '11.30-12.15', subject: 'Fiqih', teacher: 'Muhammad Lubab Pamungkas' }
+            ],
+            'Rabu': [
+                { time: '07.00-07.45', subject: 'Do\'a Awal KBM', teacher: 'Oko Hermanto' },
+                { time: '07.45-08.30', subject: 'Quran & Hafiz', teacher: 'Hi. Sri Islami Budi, M.Pd' },
+                { time: '08.30-09.15', subject: 'Jawa', teacher: 'Sholihatin, S.Pd' },
+                { time: '09.15-10.00', subject: 'BTA', teacher: 'Isda Septia Puspita, S.Pd' },
+                { time: '10.00-10.45', subject: 'Sejarah', teacher: 'Afrian Restu Utama, M.Pd' },
+                { time: '10.45-11.30', subject: 'Penjasorkes', teacher: 'Nurlaila, S.Pd' },
+                { time: '11.30-12.15', subject: 'Pendidikan Pancasila', teacher: 'Muhammad Lubab Pamungkas' }
+            ],
+            'Kamis': [
+                { time: '07.00-07.45', subject: 'Do\'a Awal KBM', teacher: 'Oko Hermanto' },
+                { time: '07.45-08.30', subject: 'Kimia', teacher: 'Fakni Halim, S.Pd' },
+                { time: '08.30-09.15', subject: 'Biologi', teacher: 'Nila Zahidah' },
+                { time: '09.15-10.00', subject: 'Aqidah Akhlak', teacher: 'Syakir Ahmad, S.Pd' },
+                { time: '10.00-10.45', subject: 'Kelas Olimpiade', teacher: 'Sholihatin, S.Pd' },
+                { time: '10.45-11.30', subject: 'Do\'a Selesai KBM', teacher: 'Oko Hermanto' }
+            ],
+            'Jumat': [
+                { time: '07.00-07.45', subject: 'Do\'a Awal KBM', teacher: 'Oko Hermanto' },
+                { time: '07.45-08.30', subject: 'Bahasa Indonesia', teacher: 'Afrian Restu Utama, M.Pd' },
+                { time: '08.30-09.15', subject: 'Geografi', teacher: 'Prs. Budi Susanto' },
+                { time: '09.15-10.00', subject: 'Sejarah', teacher: 'H, S.Pd' },
+                { time: '10.00-10.45', subject: 'BTA', teacher: 'Nurlaila, S.Pd' },
+                { time: '11.00-11.30', subject: 'Sholat Ashar Berjamaah', teacher: 'Oko Hermanto' }
+            ],
+            'Sabtu': [
+                { time: '07.00-07.45', subject: 'Do\'a Awal KBM', teacher: 'Oko Hermanto' },
+                { time: '07.45-08.30', subject: 'Bahasa Arab', teacher: 'Hi. Sri Islami Budi, M.Pd' },
+                { time: '08.30-09.15', subject: 'Matematika', teacher: 'Sholihatin, S.Pd' },
+                { time: '09.15-10.00', subject: 'Fisika', teacher: 'Isda Septia Puspita, S.Pd' },
+                { time: '10.00-10.45', subject: 'Kimia', teacher: 'Afrian Restu Utama, M.Pd' },
+                { time: '10.45-11.30', subject: 'Biologi', teacher: 'Muhammad Lubab Pamungkas' },
+                { time: '11.30-12.15', subject: 'Do\'a Selesai KBM', teacher: 'Oko Hermanto' }
+            ]
+        };
+
+        let duty = {
+            'Senin': ['Sania', 'Febi', 'Meisha', 'Ririn'],
+            'Selasa': ['Siska', 'Sadana', 'Wafi', 'Rajid'],
+            'Rabu': ['Alim', 'Daman', 'Ilham', 'Rezky'],
+            'Kamis': ['Hafi', 'Rayya', 'Aca', 'Jihan'],
+            'Jumat': ['Zahwa', 'Tasya', 'Naswa', 'Nanda'],
+            'Sabtu': ['Nafis', 'Jawahir', 'Ikmal', 'Nino', 'Faaza', 'Azza', 'Fadila', 'Aina', 'Sheila', 'Firda', 'Chiko', 'Zahra', 'Noval', 'Munib', 'Adam', 'Faris']
+        };
+
+        let isAdmin = false;
+
+        // Fungsi Tampilkan Section
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+            
+            if (section === 'siswa') {
+                displayStudents();
+            } else if (section === 'jadwal') {
+                displaySchedule();
+            } else if (section === 'piket') {
+                displayDuty();
+            }
+        }
+
+        // Tampilkan Siswa
+        function displayStudents() {
+            const container = document.getElementById('studentList');
+            container.innerHTML = '';
+            
+            students.forEach((student, index) => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `
+                    <div class="student-name">${student}</div>
+                    ${isAdmin ? `<button class="edit-btn" onclick="editStudent(${index})">Edit</button>
+                                <button class="edit-btn" onclick="deleteStudent(${index})">Hapus</button>` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Tampilkan Jadwal
+        function displaySchedule() {
+            const container = document.getElementById('scheduleContent');
+            container.innerHTML = '';
+            
+            Object.keys(schedule).forEach(day => {
+                const dayDiv = document.createElement('div');
+                dayDiv.innerHTML = `<div class="day-header">${day}</div>`;
+                
+                const table = document.createElement('table');
+                table.className = 'schedule-table';
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Jam</th>
+                            <th>Mata Pelajaran</th>
+                            <th>Guru</th>
+                            ${isAdmin ? '<th>Aksi</th>' : ''}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${schedule[day].map((item, index) => `
+                            <tr>
+                                <td>${item.time}</td>
+                                <td>${item.subject}</td>
+                                <td>${item.teacher}</td>
+                                ${isAdmin ? `
+                                    <td>
+                                        <button class="edit-btn" onclick="editSchedule('${day}', ${index})">Edit</button>
+                                        <button class="edit-btn" onclick="deleteSchedule('${day}', ${index})">Hapus</button>
+                                    </td>
+                                ` : ''}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                dayDiv.appendChild(table);
+                container.appendChild(dayDiv);
+            });
+        }
+
+        // Tampilkan Piket
+        function displayDuty() {
+            const container = document.getElementById('dutyContent');
+            container.innerHTML = '';
+            
+            Object.keys(duty).forEach(day => {
+                const dayDiv = document.createElement('div');
+                dayDiv.innerHTML = `
+                    <div class="day-header">${day}</div>
+                    <div class="duty-list">
+                        ${duty[day].map((name, index) => `
+                            <div class="duty-item">
+                                ${name}
+                                ${isAdmin ? `
+                                    <button class="edit-btn" onclick="editDuty('${day}', ${index})">Edit</button>
+                                    <button class="edit-btn" onclick="deleteDuty('${day}', ${index})">Hapus</button>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(dayDiv);
+            });
+        }
+
+        // Admin Functions
+        function showAdmin() {
+            if (!isAdmin) {
+                document.getElementById('loginModal').style.display = 'block';
+            } else {
+                showSection('adminPanel');
+            }
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === 'man2semarang') {
+                isAdmin = true;
+                document.getElementById('loginModal').style.display = 'none';
+                showSection('adminPanel');
+                displayStudents();
+                displaySchedule();
+                displayDuty();
+            } else {
+                alert('Username atau password salah!');
+            }
+        });
+
+        // CRUD Operations
+        function addStudent() {
+            const name = document.getElementById('newStudent').value;
+            if (name) {
+                students.push(name);
+                document.getElementById('newStudent').value = '';
+                displayStudents();
+                displayDuty();
+            }
+        }
+
+        function editStudent(index) {
+            const newName = prompt('Masukkan nama baru:', students[index]);
+            if (newName) {
+                students[index] = newName;
+                displayStudents();
+                displayDuty();
+            }
+        }
+
+        function deleteStudent(index) {
+            if (confirm('Yakin ingin menghapus siswa ini?')) {
+                students.splice(index, 1);
+                displayStudents();
+                displayDuty();
+            }
+        }
+
+        function addSchedule() {
+            const day = document.getElementById('day').value;
+            const time = document.getElementById('time').value;
+            const subject = document.getElementById('subject').value;
+            const teacher = document.getElementById('teacher').value;
+            
+            if (time && subject && teacher) {
+                schedule[day].push({ time, subject, teacher });
+                document.getElementById('time').value = '';
+                document.getElementById('subject').value = '';
+                document.getElementById('teacher').value = '';
+                displaySchedule();
+            }
+        }
+
+        function editSchedule(day, index) {
+            const item = schedule[day][index];
+            const newTime = prompt('Masukkan jam baru:', item.time);
+            const newSubject = prompt('Masukkan mata pelajaran baru:', item.subject);
+            const newTeacher = prompt('Masukkan nama guru baru:', item.teacher);
+            
+            if (newTime && newSubject && newTeacher) {
+                schedule[day][index] = { time: newTime, subject: newSubject, teacher: newTeacher };
+                displaySchedule();
+            }
+        }
+
+        function deleteSchedule(day, index) {
+            if (confirm('Yakin ingin menghapus jadwal ini?')) {
+                schedule[day].splice(index, 1);
+                displaySchedule();
+            }
+        }
+
+        function addDuty() {
+            const day = document.getElementById('dutyDay').value;
+            const name = document.getElementById('dutyName').value;
+            
+            if (name) {
+                duty[day].push(name);
+                document.getElementById('dutyName').value = '';
+                displayDuty();
+            }
+        }
+
+        function editDuty(day, index) {
+            const newName = prompt('Masukkan nama baru:', duty[day][index]);
+            if (newName) {
+                duty[day][index] = newName;
+                displayDuty();
+            }
+        }
+
+        function deleteDuty(day, index) {
+            if (confirm('Yakin ingin menghapus piket ini?')) {
+                duty[day].splice(index, 1);
+                displayDuty();
+            }
+        }
+
+        // Initialize
+        displayStudents();
+    </script>
+</body>
+</html>
